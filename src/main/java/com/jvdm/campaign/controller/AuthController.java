@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 //for Angular Client (withCredentials)
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -74,9 +73,6 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    if (userService.existsByUsername(signUpRequest.username())) {
-      return ResponseEntity.badRequest().body("Error: Username is already taken!");
-    }
 
     if (userService.existsByEmail(signUpRequest.email())) {
       return ResponseEntity.badRequest().body("Error: Email is already in use!");

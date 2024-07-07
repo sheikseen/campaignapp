@@ -4,56 +4,48 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
+//import java.util.List;
 
 @Entity
-@Table(name = "Bookings")
+@Table(name = "booking")
 public class Booking {
 
     @Id
-    @Column(name = "booking_id")
+    @Column(name = "bookingid")
     private String bookingId;
 
-    @Column(name = "booker_name")
-    private String bookerName;
+    @Column(name = "dependentcount")
+    private int dependentCount;
 
-    @Column(name = "booker_age")
-    private int bookerAge;
+    @Column(name = "paymentvia")
+    private PaymentMethod paymentVia;
 
-    @Column(nullable = false)
-    private String bookerPhone;
-
-    @Column(nullable = false)
-    private String bookerPlace;
-
-    @Column(name = "booking_date")
-    private Date bookingDate;
-
-    @Column(name = "seat_count")
-    private int seatCount;
-
-    @Column(name = "total_amount")
+    @Column(name = "totalamount")
     private BigDecimal totalAmount;
 
-    @Column(name = "paidVia")
-    private PaymentMethod paidVia;
-
-    @Column(name = "AmtPaid")
+    @Column(name = "amountpaid")
     private BigDecimal amountPaid;
 
-    @Column(name = "isPaid")
+    @Column(name = "ispaid")
     private boolean isPaid;
 
-    @Column(name = "booking_status")
+    @Column(name = "bookingstatus")
     private BookingStatus bookingStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "principal_id", referencedColumnName = "id")
-    private Principal loggedInPrincipal;
+    @Column(name = "bookingdate")
+    private Date bookingDate;
 
     @ManyToOne
-    @JoinColumn(name = "camp_id", referencedColumnName = "id")
-    private Camp camp;
+    @JoinColumn(name = "userid", referencedColumnName = "userid")
+    private User userId;
+
+    @ManyToOne
+    @JoinColumn(name = "eventid", referencedColumnName = "eventid")
+    private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "dependentid", referencedColumnName = "dependentid")
+    private Dependent dependent;
 
     public String getBookingId() {
         return bookingId;
@@ -64,57 +56,12 @@ public class Booking {
         return this;
     }
 
-    public String getBookerName() {
-        return bookerName;
-    }
-
-    public Booking setBookerName(String bookerName) {
-        this.bookerName = bookerName;
-        return this;
-    }
-
-    public int getBookerAge() {
-        return bookerAge;
-    }
-
-    public Booking setBookerAge(int bookerAge) {
-        this.bookerAge = bookerAge;
-        return this;
-    }
-
-    public String getBookerPhone() {
-        return bookerPhone;
-    }
-
-    public Booking setBookerPhone(String bookerPhone) {
-        this.bookerPhone = bookerPhone;
-        return this;
-    }
-
-    public String getBookerPlace() {
-        return bookerPlace;
-    }
-
-    public Booking setBookerPlace(String bookerPlace) {
-        this.bookerPlace = bookerPlace;
-        return this;
-    }
-
     public Date getBookingDate() {
         return bookingDate;
     }
 
     public Booking setBookingDate(Date bookingDate) {
         this.bookingDate = bookingDate;
-        return this;
-    }
-
-    public int getSeatCount() {
-        return seatCount;
-    }
-
-    public Booking setSeatCount(int seatCount) {
-        this.seatCount = seatCount;
         return this;
     }
 
@@ -128,11 +75,11 @@ public class Booking {
     }
 
     public PaymentMethod getPaidVia() {
-        return paidVia;
+        return paymentVia;
     }
 
-    public Booking setPaidVia(PaymentMethod paidVia) {
-        this.paidVia = paidVia;
+    public Booking setPaidVia(PaymentMethod paymentVia) {
+        this.paymentVia = paymentVia;
         return this;
     }
 
@@ -163,23 +110,14 @@ public class Booking {
         return this;
     }
 
-    public Principal getLoggedInPrincipal() {
-        return loggedInPrincipal;
-    }
+    // public Principal getLoggedInPrincipal() {
+    // return loggedInPrincipal;
+    // }
 
-    public Booking setLoggedInPrincipal(Principal loggedInPrincipal) {
-        this.loggedInPrincipal = loggedInPrincipal;
-        return this;
-    }
-
-    public Camp getCamp() {
-        return camp;
-    }
-
-    public Booking setCamp(Camp camp) {
-        this.camp = camp;
-        return this;
-    }
+    // public Booking setLoggedInPrincipal(Principal loggedInPrincipal) {
+    // this.loggedInPrincipal = loggedInPrincipal;
+    // return this;
+    // }
 
     public Booking() {
     }

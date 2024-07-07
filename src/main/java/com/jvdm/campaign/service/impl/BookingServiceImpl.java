@@ -3,10 +3,10 @@ package com.jvdm.campaign.service.impl;
 import com.jvdm.campaign.dto.BookingDto;
 import com.jvdm.campaign.dto.DependentDTO;
 import com.jvdm.campaign.entity.Booking;
-import com.jvdm.campaign.entity.Camp;
+import com.jvdm.campaign.entity.Event;
 import com.jvdm.campaign.entity.Dependent;
 import com.jvdm.campaign.repository.BookingRepository;
-import com.jvdm.campaign.repository.CampRepository;
+import com.jvdm.campaign.repository.EventRepository;
 import com.jvdm.campaign.repository.DependentRepository;
 import com.jvdm.campaign.repository.UserRepository;
 import com.jvdm.campaign.service.BookingService;
@@ -27,7 +27,7 @@ public class BookingServiceImpl implements BookingService {
     BookingRepository bookingRepository;
 
     @Autowired
-    CampRepository campRepository;
+    EventRepository eventRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -35,40 +35,41 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     DependentRepository dependentRepository;
 
-    private Optional<Camp> findCampById(String CampId) {
-        return campRepository.findById(CampId);
+    private Optional<Event> findEventById(String eventId) {
+        return eventRepository.findById(eventId);
     }
+
     @Override
     public List<String> validate(BookingDto bookingDto) {
         List<String> errorMessages = new ArrayList<>();
-        Optional<Camp> camp = findCampById(bookingDto.getCampId());
-        if (camp.isEmpty()) {
-          errorMessages.add("Invalid Camp Id");
+        Optional<Event> event = findEventById(bookingDto.getEventId());
+        if (event.isEmpty()) {
+            errorMessages.add("Invalid Event Id");
         }
-        if (!validCamp(camp)) {
-            errorMessages.add("you cannot book this camp as camp status is not created");
+        if (!validEvent(event)) {
+            errorMessages.add("you cannot book this event as event status is not created");
         }
-        if (bookingDto.getTotalAmount() == null || bookingDto.getSeatCount() <= 0
-                || bookingDto.getSeatCount() > camp.get().getSeats()) {
-            errorMessages.add("Invalid total amount or number of seats booked.");
-        }
-        int availbale_seats = camp.get().getSeats() - camp.get().getSeatsBooked();
-        if (availbale_seats < camp.get().getSeats()){
+        // if (bookingDto.getTotalAmount() == null || bookingDto.getSeatCount() <= 0
+        // || bookingDto.getSeatCount() > event.get().getSeats()) {
+        // errorMessages.add("Invalid total amount or number of seats booked.");
+        // }
+        int availbale_seats = event.get().getSeats() - event.get().getSeatsBooked();
+        if (availbale_seats < event.get().getSeats()) {
             String message = "Total seats exceed the available seats. Available seats : " + availbale_seats;
             errorMessages.add(message);
         }
-        if (!validTotalAmount(camp.get(), bookingDto)) {
-            errorMessages.add("total amount does not match the expected total amount");
-        }
+        // if (!validTotalAmount(event.get(), bookingDto)) {
+        // errorMessages.add("total amount does not match the expected total amount");
+        // }
         return errorMessages;
     }
 
     @Override
     @Transactional
-    public BookingDto registerCamp(BookingDto bookingDto, String username) {
-        Optional<Camp> camp = campRepository.findById(bookingDto.getCampId());
+    public BookingDto registerEvent(BookingDto bookingDto, String username) {
+        Optional<Event> event = eventRepository.findById(bookingDto.getEventId());
         Booking booking = addBooking(bookingDto, username);
-        List<Dependent> dependents = addDependents(bookingDto,booking);
+        List<Dependent> dependents = addDependents(bookingDto, booking);
         bookingRepository.save(booking);
         dependentRepository.saveAll(dependents);
         return bookingDto;
@@ -84,7 +85,8 @@ public class BookingServiceImpl implements BookingService {
                 dependent.setBooking(booking);
                 dependent.setName(dependentDTO.getDependentName());
                 dependent.setAge(dependentDTO.getAge());
-                dependent.setPhoneNo(dependentDTO.getPhoneNo());
+                dependent.setPlace(dependentDTO.getPlace());
+                dependent.setGender(dependentDTO.getGender());
                 dependents.add(dependent);
             }
         }
@@ -95,19 +97,17 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         // Assuming you generate ID for each booking
         booking.setBookingId(UUID.randomUUID().toString());
-        booking.setCamp(findCampById(bookingDto.getCampId()).get());
+        // booking.setEvent(findEventById(bookingDto.getEventId()).get());
         booking.setPaid(Boolean.FALSE);
         booking.setTotalAmount(bookingDto.getTotalAmount());
         booking.setBookingDate(bookingDto.getBookingDate());
-        booking.setSeatCount(1 + bookingDto.getDependents().size());
-        //booking.setPaidVia(bookingDto.getPaidVia());
+        // booking.setSeatCount(1 + bookingDto.getDependents().size());
+        // booking.setPaidVia(bookingDto.getPaidVia());
         booking.setTotalAmount(bookingDto.getTotalAmount());
         booking.setAmountPaid(BigDecimal.ZERO);
-        booking.setBookerName(bookingDto.getBookerName());
-        booking.setBookerPlace(bookingDto.getBookerPlace());
-        booking.setBookerAge(bookingDto.getBookerAge());
-        booking.setLoggedInPrincipal(userRepository.findByUsername(username).get());
-        booking.setBookerPhone(bookingDto.getBookerPhone());
+
+        // booking.setLoggedInPrincipal(userRepository.findByUsername(username).get());
+
         booking.setBookingStatus(Booking.BookingStatus.PENDING);
 
         if (bookingDto.getDependents() != null) {
@@ -117,39 +117,45 @@ public class BookingServiceImpl implements BookingService {
                 dependent.setBooking(booking);
                 dependent.setName(dependentDTO.getDependentName());
                 dependent.setAge(dependentDTO.getAge());
-                dependent.setPhoneNo(dependentDTO.getPhoneNo());
+                dependent.setPlace(dependentDTO.getPlace());
+                dependent.setGender(dependentDTO.getGender());
             }
         }
         return booking;
     }
 
-    private boolean validCamp(Optional<Camp> camp) {
-        return camp
-                .map(Camp::getStatus)
-                .map(status -> status == Camp.CampStatus.CREATED)
+    private boolean validEvent(Optional<Event> event) {
+        return event
+                .map(Event::getStatus)
+                .map(status -> status == Event.EventStatus.CREATED)
                 .orElse(false);
     }
 
-    private boolean validTotalAmount(Camp camp, BookingDto bookingDto) {
-        BigDecimal seatPrice = camp.getAmount();
-        BigDecimal childSeatPrice = camp.getChildSeatAmount() != null ? camp.getChildSeatAmount() : seatPrice;
-
-        int adults = bookingDto.getBookerAge() > 10 ? 1 : 0;
-        int children = 0;
-        if (bookingDto.getDependents() != null) {
-            for (DependentDTO dependent : bookingDto.getDependents()) {
-                if (dependent.getAge() > 10) {
-                    adults++;
-                } else {
-                    children++;
-                }
-            }
-        }
-        BigDecimal expectedTotalAmount = seatPrice.multiply(BigDecimal.valueOf(adults))
-                .add(childSeatPrice.multiply(BigDecimal.valueOf(children)));
-
-        return expectedTotalAmount.equals(bookingDto.getTotalAmount());
-
-    }
-
+    /*
+     * private boolean validTotalAmount(Event event, BookingDto bookingDto) {
+     * BigDecimal seatPrice = event.getAdultAmount();
+     * BigDecimal childSeatPrice = event.getChildAmount() != null ?
+     * event.getChildAmount() : seatPrice;
+     * 
+     * int adults = bookingDto.getAge() > 10 ? 1 : 0;
+     * int children = 0;
+     * if (bookingDto.getDependents() != null) {
+     * for (DependentDTO dependent : bookingDto.getDependents()) {
+     * if (dependent.getAge() > 10) {
+     * adults++;
+     * } else {
+     * children++;
+     * }
+     * }
+     * }
+     * BigDecimal expectedTotalAmount =
+     * seatPrice.multiply(BigDecimal.valueOf(adults))
+     * .add(childSeatPrice.multiply(BigDecimal.valueOf(children)));
+     * 
+     * return expectedTotalAmount.equals(bookingDto.getTotalAmount());
+     * 
+     * }
+     * 
+     * }
+     */
 }

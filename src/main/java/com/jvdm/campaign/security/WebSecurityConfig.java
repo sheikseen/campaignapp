@@ -20,14 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-
 @Configuration
-//@EnableWebSecurity
+// @EnableWebSecurity
 @EnableMethodSecurity
-//(securedEnabled = true,
-//jsr250Enabled = true,
-//prePostEnabled = true) // by default
+// (securedEnabled = true,
+// jsr250Enabled = true,
+// prePostEnabled = true) // by default
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -42,12 +40,12 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
-      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-       
-      authProvider.setUserDetailsService(userDetailsService);
-      authProvider.setPasswordEncoder(passwordEncoder());
-   
-      return authProvider;
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+
+    return authProvider;
   }
 
   @Bean
@@ -60,22 +58,19 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> 
-          auth.requestMatchers("/api/auth/**").permitAll()
-              .requestMatchers("/api/booking/register").permitAll()
-              .anyRequest().authenticated()
-        );
-    
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/booking/register").permitAll()
+            .anyRequest().authenticated());
+
     http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    
+
     return http.build();
   }
 }

@@ -1,11 +1,29 @@
 package com.jvdm.campaign.dto;
 
-public class DependentDTO
-{
+public class DependentDTO {
     private String dependentId;
     private String dependentName;
     private int age;
-    private String phoneNo;
+    private String gender;
+    private String place;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public DependentDTO setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public DependentDTO setPlace(String place) {
+        this.place = place;
+        return this;
+    }
 
     public String getDependentId() {
         return dependentId;
@@ -31,15 +49,6 @@ public class DependentDTO
 
     public DependentDTO setAge(int age) {
         this.age = age;
-        return this;
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public DependentDTO setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
         return this;
     }
 

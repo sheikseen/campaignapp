@@ -12,14 +12,19 @@ public class SignupRequest {
     @NotBlank
     private String name;
     @NotBlank
-    @Pattern(regexp="^\\d{10}$", message="Invalid phone number")
+    private String place;
+    @NotBlank
+    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone number")
     private String phone;
+    @NotBlank
+    private int age;
+    @NotBlank
+    private String gender;
+
     @NotBlank
     @Email
     private String email;
-    @NotBlank
-    @Size(min = 3, max = 20)
-    private String username;
+
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
@@ -35,7 +40,6 @@ public class SignupRequest {
         return this;
     }
 
-
     public String phone() {
         return phone;
     }
@@ -45,21 +49,39 @@ public class SignupRequest {
         return this;
     }
 
+    public String place() {
+        return place;
+    }
+
+    public SignupRequest setPlace(String place) {
+        this.place = place;
+        return this;
+    }
+
+    public int age() {
+        return age;
+    }
+
+    public SignupRequest setAge(int age) {
+        this.age = age;
+        return this;
+    }
+
+    public String gender() {
+        return gender;
+    }
+
+    public SignupRequest setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
     public String email() {
         return email;
     }
 
     public SignupRequest setEmail(String email) {
         this.email = email;
-        return this;
-    }
-
-    public String username() {
-        return username;
-    }
-
-    public SignupRequest setUsername(String username) {
-        this.username = username;
         return this;
     }
 
