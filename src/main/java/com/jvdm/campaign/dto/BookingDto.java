@@ -1,28 +1,24 @@
 package com.jvdm.campaign.dto;
 
 import com.jvdm.campaign.entity.Booking;
-import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class BookingDto
-{
+public class BookingDto {
     public String bookingId;
-    public String campId;
-    public String bookerName;
-    public int bookerAge;
-    private String bookerPhone;
-    private String bookerPlace;
-    public int seatCount;
+    public int dependentCount;
+    public String paymentVia;
     public BigDecimal totalAmount;
-    public Date bookingDate;
-    public Booking.PaymentMethod paidVia;
-    public BigDecimal amtPaid;
+    public BigDecimal amountPaid;
+    public boolean isPaid;
     public Booking.BookingStatus bookingStatus;
-    public String loggedInPrincipalId;
-    public List<DependentDTO> dependents;
+    public Date bookingDate;
+    public String userId;
+    public String dependentId;
+    public String eventId;
+    private String loggedInUserId;
 
     public String getBookingId() {
         return bookingId;
@@ -33,40 +29,20 @@ public class BookingDto
         return this;
     }
 
-    public String getCampId() {
-        return campId;
+    public int getDependentCount() {
+        return dependentCount;
     }
 
-    public BookingDto setCampId(String campId) {
-        this.campId = campId;
-        return this;
+    public void setDependentCount(int dependentCount) {
+        this.dependentCount = dependentCount;
     }
 
-    public String getBookerName() {
-        return bookerName;
+    public String getPaymentVia() {
+        return paymentVia;
     }
 
-    public BookingDto setBookerName(String bookerName) {
-        this.bookerName = bookerName;
-        return this;
-    }
-
-    public int getBookerAge() {
-        return bookerAge;
-    }
-
-    public BookingDto setBookerAge(int bookerAge) {
-        this.bookerAge = bookerAge;
-        return this;
-    }
-
-    public int getSeatCount() {
-        return seatCount;
-    }
-
-    public BookingDto setSeatCount(int seatCount) {
-        this.seatCount = seatCount;
-        return this;
+    public void setPaymentVia(String paymentVia) {
+        this.paymentVia = paymentVia;
     }
 
     public BigDecimal getTotalAmount() {
@@ -78,21 +54,28 @@ public class BookingDto
         return this;
     }
 
+    public BigDecimal getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
     public Date getBookingDate() {
         return bookingDate;
     }
 
     public BookingDto setBookingDate(Date bookingDate) {
         this.bookingDate = bookingDate;
-        return this;
-    }
-
-    public BigDecimal getAmtPaid() {
-        return amtPaid;
-    }
-
-    public BookingDto setAmtPaid(BigDecimal amtPaid) {
-        this.amtPaid = amtPaid;
         return this;
     }
 
@@ -105,14 +88,40 @@ public class BookingDto
         return this;
     }
 
-    public String getLoggedInPrincipalId() {
-        return loggedInPrincipalId;
+    public String getUserId() {
+        return userId;
     }
 
-    public BookingDto setLoggedInPrincipalId(String loggedInPrincipalId) {
-        this.loggedInPrincipalId = loggedInPrincipalId;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDependentId() {
+        return dependentId;
+    }
+
+    public void setDependentId(String dependentId) {
+        this.dependentId = dependentId;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getLoggedInUserlId() {
+        return loggedInUserId;
+    }
+
+    public BookingDto setLoggedInUserId(String loggedInUserId) {
+        this.loggedInUserId = loggedInUserId;
         return this;
     }
+
+    public List<DependentDTO> dependents;
 
     public List<DependentDTO> getDependents() {
         return dependents;
@@ -123,34 +132,6 @@ public class BookingDto
         return this;
     }
 
-    public String getBookerPhone() {
-        return bookerPhone;
-    }
-
-    public BookingDto setBookerPhone(String bookerPhone) {
-        this.bookerPhone = bookerPhone;
-        return this;
-    }
-
-    public String getBookerPlace() {
-        return bookerPlace;
-    }
-
-    public BookingDto setBookerPlace(String bookerPlace) {
-        this.bookerPlace = bookerPlace;
-        return this;
-    }
-
-    public Booking.PaymentMethod getPaidVia() {
-        return paidVia;
-    }
-
-    public BookingDto setPaidVia(Booking.PaymentMethod paidVia) {
-        this.paidVia = paidVia;
-        return this;
-    }
-
     public BookingDto() {
     }
 }
-

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.jvdm.campaign.entity.Principal;
+import com.jvdm.campaign.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,25 +26,25 @@ public class UserDetailsImpl implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public UserDetailsImpl(String id, String username, String email, String password,
+  public UserDetailsImpl(String id, /* String username, */ String email, String password,
       Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
-    this.username = username;
+    // this.username = username;
     this.email = email;
     this.password = password;
     this.authorities = authorities;
   }
 
-  public static UserDetailsImpl build(Principal principal) {
-    List<GrantedAuthority> authorities = principal.getRoles().stream()
+  public static UserDetailsImpl build(User user) {
+    List<GrantedAuthority> authorities = user.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.toString()))
         .collect(Collectors.toList());
 
     return new UserDetailsImpl(
-        principal.getId(),
-        principal.getUsername(),
-        principal.getEmail(),
-        principal.getPassword(),
+        user.getUserId(),
+        // user.getUsername(),
+        user.getEmail(),
+        user.getPassword(),
         authorities);
   }
 

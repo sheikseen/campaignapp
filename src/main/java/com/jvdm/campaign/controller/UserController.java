@@ -46,7 +46,7 @@ public class UserController {
         if (userDto == null || userId.isBlank()) {
             return ResponseEntity.badRequest().body("Request cannot be empty ");
         }
-        if (!userId.equals(userDto.getId())) {
+        if (!userId.equals(userDto.getUserId())) {
             return ResponseEntity.badRequest().body("Ids in request don't match. You cannot update Id ");
         }
         UserDto user = userService.updateUser(userDto);

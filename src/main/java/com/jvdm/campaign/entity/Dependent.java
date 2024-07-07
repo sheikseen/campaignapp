@@ -3,25 +3,28 @@ package com.jvdm.campaign.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Dependents")
+@Table(name = "dependent")
 public class Dependent {
 
     @Id
-    @Column(name = "dependent_id")
+    @Column(name = "dependentid")
     private String dependentId;
 
     @ManyToOne
-    @JoinColumn(name = "booking_id", nullable = false)
+    @JoinColumn(name = "bookingid", nullable = false)
     private Booking booking;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "depententname", nullable = false)
+    private String depententName;
 
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "phoneNo", nullable = false)
-    private String phoneNo;
+    @Column(name = "gender", nullable = false)
+    private String gender;
+
+    @Column(name = "place", nullable = false)
+    private String place;
 
     public String getDependentId() {
         return dependentId;
@@ -42,11 +45,11 @@ public class Dependent {
     }
 
     public String getName() {
-        return name;
+        return depententName;
     }
 
-    public Dependent setName(String name) {
-        this.name = name;
+    public Dependent setName(String depententName) {
+        this.depententName = depententName;
         return this;
     }
 
@@ -59,13 +62,20 @@ public class Dependent {
         return this;
     }
 
-    public String getPhoneNo() {
-        return phoneNo;
+    public String getGender() {
+        return gender;
     }
 
-    public Dependent setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-        return this;
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public Dependent() {

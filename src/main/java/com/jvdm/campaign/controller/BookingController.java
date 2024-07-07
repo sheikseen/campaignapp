@@ -20,24 +20,23 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerForCamp(@Valid @RequestBody BookingDto bookingDto) {
+    public ResponseEntity<?> registerForEvent(@Valid @RequestBody BookingDto bookingDto) {
         var errorMessages = bookingService.validate(bookingDto);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
-        var principal=authentication.getPrincipal();
+        var user = authentication.getPrincipal();
         if (errorMessages.isEmpty()) {
-           BookingDto bookingDto1 = bookingService.registerCamp(bookingDto, currentUsername);
+            BookingDto bookingDto1 = bookingService.registerEvent(bookingDto, currentUsername);
         } else {
             return ResponseEntity.badRequest().body(errorMessages);
         }
         return ResponseEntity.ok("Booking Successful");
     }
 
-
-    //registerUSer
-    //registerBulkUser
-    //EditRegistration
-    //DeleteRegistration
-    //ListRegisteredUserBasedOnCampid   Admin
-    //ListRegisteredCampPerUserID(phoneNO)
+    // registerUSer
+    // registerBulkUser
+    // EditRegistration
+    // DeleteRegistration
+    // ListRegisteredUserBasedOnCampid Admin
+    // ListRegisteredCampPerUserID(phoneNO)
 }

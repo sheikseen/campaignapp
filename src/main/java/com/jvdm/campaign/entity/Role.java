@@ -3,9 +3,8 @@ package com.jvdm.campaign.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="roles")
-public class Role
-{
+@Table(name = "roles")
+public class Role {
 
     @Id
     @Enumerated(EnumType.STRING)
@@ -13,7 +12,8 @@ public class Role
 
     private String name;
 
-    public Role() {}
+    public Role() {
+    }
 
     public RoleId getId() {
         return id;

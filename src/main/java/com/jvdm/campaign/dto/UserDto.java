@@ -12,35 +12,39 @@ import java.util.Set;
 
 public class UserDto implements Serializable {
 
-    private String id;
-
+    private String userId;
     private String name;
-
-    private String email;
-
+    private String place;
     private String phone;
-    private String username;
-
+    private int age;
+    private String gender;
+    private String email;
     private String password;
 
-    public UserDto() {
+    public String getUserId() {
+        return userId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public UserDto setId(String id) {
-        this.id = id;
+    public UserDto setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public UserDto setEmail(String email) {
-        this.email = email;
+    public UserDto setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public UserDto setPlace(String place) {
+        this.place = place;
         return this;
     }
 
@@ -53,21 +57,43 @@ public class UserDto implements Serializable {
         return this;
     }
 
-    public String getUsername() {
-        return username;
+    public int getAge() {
+        return age;
     }
 
-    public UserDto setUsername(String username) {
-        this.username = username;
+    public UserDto setAge(int age) {
+        this.age = age;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getGender() {
+        return gender;
     }
 
-    public UserDto setName(String name) {
-        this.name = name;
+    public UserDto setGender(String gender) {
+        this.gender = gender;
         return this;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public UserDto setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserDto setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public UserDto() {
+    }
+
 }
